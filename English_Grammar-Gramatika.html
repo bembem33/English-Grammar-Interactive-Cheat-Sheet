@@ -1,0 +1,308 @@
+<!doctype html><html lang="sr-Latn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>English Grammar – Interactive Cheat Sheet</title><style>
+*{box-sizing:border-box}body{margin:0;background:#f4f6fa;color:#293444;font:16px/1.55 Arial,Helvetica,sans-serif}main{max-width:1000px;margin:auto;padding:clamp(12px,4vw,36px)}header{margin-bottom:24px}h1{font-size:clamp(24px,4vw,36px);line-height:1.2;margin:8px 0}h2{font-size:19px;margin:0 0 12px}p{margin:8px 0}.muted,small{color:#536274}small{display:block;font-size:13px}.panel{background:white;border:1px solid #dce2eb;border-radius:16px;padding:clamp(14px,3vw,24px);margin-bottom:16px}.people{display:grid;grid-template-columns:repeat(auto-fit,minmax(85px,1fr));gap:8px}button,input,select{font:inherit;color:inherit}button{cursor:pointer;border:1px solid #ccd6e3;background:#fff;border-radius:9px;padding:9px}button[aria-pressed=true]{background:#dce9fa;border-color:#6686b0}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #6686b0;outline-offset:2px}label{display:block;font-weight:bold;margin:16px 0 6px}select,input{width:100%;min-width:0;padding:12px;border:1px solid #bdc9d8;border-radius:9px;background:#fafbfe}select{white-space:normal} .hint{background:#edf0fa;padding:12px;border-radius:9px;margin-top:10px}.results,.forms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.result,.form{padding:16px;border-radius:12px;overflow-wrap:anywhere}.result:nth-child(1){background:#e1f2e8}.result:nth-child(2){background:#f9e5e6}.result:nth-child(3){background:#e2edfa}.sentence{font-size:clamp(19px,2.5vw,25px);font-weight:bold;margin:12px 0}.form{background:#f0edf8}.word{font-size:24px;font-weight:bold}.tag{font-size:12px;letter-spacing:1px;color:#536274} .copy{font-size:13px;background:#ffffffa0}footer{font-size:13px;color:#536274} @media(max-width:650px){.results,.forms{grid-template-columns:1fr}.people{grid-template-columns:repeat(4,minmax(0,1fr))}.people button{padding:8px 2px}}@media(max-width:320px){.people{grid-template-columns:repeat(2,1fr)}}@media print{body{background:white}.copy{display:none}.panel{break-inside:avoid}}</style></head><body><main><header><div class="tag">OFFLINE • SRPSKI → ENGLISH</div><h1>English Grammar – Interactive Cheat Sheet</h1><p class="muted">Izaberi lice, vreme i glagol. Uporedi tri oblika rečenice.</p></header><section class="panel"><h2>1. Izaberi lice</h2><div class="people" id="people"></div><label for="tense">2. Gramatičko vreme</label><select id="tense"></select><div class="hint" id="hint"></div><label for="search">3. Pronađi glagol (engleski ili srpski)</label><input id="search" type="search" placeholder="npr. send, poslati, čekati"><label for="verb">Glagol</label><select id="verb"></select><small id="count"></small></section><section class="panel"><h2>4. Konstrukcija rečenice</h2><div class="results" id="results" aria-live="polite"></div><p class="muted" id="note"></p><small id="status" role="status"></small></section><section class="panel"><h2>5. Oblici glagola – V1, V2, V3</h2><small>V1, V2 i V3 označavaju tri osnovna oblika engleskog glagola. V1 je osnovni oblik (bez „to“), V2 je oblik za Past Simple, a V3 je prošli particip koji se koristi u Perfect konstrukcijama i pasivu.</small><div class="forms" id="forms" style="margin-top:14px"></div><p id="ing" class="muted"></p><small>Srpska značenja su približna: V3 nema uvek samostalan prevod i zavisi od konstrukcije i konteksta.</small></section><footer>Radi potpuno offline • Bez eksternih biblioteka, fontova i mrežnih zahteva.</footer></main><script>
+const raw=`be|biti|was/were|been|being|is
+have|imati|had|had|having|has
+do|raditi, uraditi|did|done|doing|does
+say|reći|said|said
+get|dobiti, stići|got|got/gotten|getting
+make|napraviti|made|made|making
+go|ići|went|gone|going|goes
+know|znati|knew|known
+think|misliti|thought|thought
+take|uzeti|took|taken|taking
+see|videti|saw|seen|seeing
+come|doći|came|come|coming
+want|želeti
+look|gledati
+use|koristiti
+find|pronaći|found|found
+give|dati|gave|given|giving
+tell|reći, ispričati|told|told
+work|raditi
+call|pozvati
+try|pokušati
+ask|pitati
+need|trebati
+feel|osećati|felt|felt
+become|postati|became|become|becoming
+leave|otići, napustiti|left|left
+put|staviti|put|put|putting
+mean|značiti|meant|meant
+keep|zadržati|kept|kept
+let|dopustiti|let|let|letting
+begin|početi|began|begun|beginning
+seem|delovati
+help|pomoći
+talk|razgovarati
+turn|okrenuti
+start|početi
+show|pokazati|showed|shown
+hear|čuti|heard|heard
+play|igrati
+run|trčati|ran|run|running
+move|pomeriti
+live|živeti
+believe|verovati
+bring|doneti|brought|brought
+happen|dogoditi se
+write|pisati|wrote|written|writing
+provide|obezbediti
+sit|sedeti|sat|sat|sitting
+stand|stajati|stood|stood
+lose|izgubiti|lost|lost|losing
+pay|platiti|paid|paid
+meet|sresti|met|met
+include|uključiti
+continue|nastaviti
+set|postaviti|set|set|setting
+learn|učiti|learned/learnt|learned/learnt
+change|promeniti
+lead|voditi|led|led
+understand|razumeti|understood|understood
+watch|gledati
+follow|pratiti
+stop|zaustaviti|stopped|stopped|stopping
+create|stvoriti
+speak|govoriti|spoke|spoken
+read|čitati|read|read
+allow|dozvoliti
+add|dodati
+spend|provesti, potrošiti|spent|spent
+grow|rasti|grew|grown
+open|otvoriti
+walk|hodati
+win|pobediti|won|won|winning
+offer|ponuditi
+remember|sećati se
+love|voleti
+consider|razmotriti
+appear|pojaviti se
+buy|kupiti|bought|bought
+wait|čekati
+serve|služiti
+send|poslati|sent|sent
+expect|očekivati
+build|graditi|built|built
+stay|ostati
+fall|pasti|fell|fallen
+cut|seći|cut|cut|cutting
+reach|stići, dosegnuti
+remain|ostati
+suggest|predložiti
+raise|podići
+pass|proći
+sell|prodati|sold|sold
+require|zahtevati
+report|izvestiti
+decide|odlučiti
+pull|vući
+return|vratiti
+explain|objasniti
+hope|nadati se
+carry|nositi
+break|slomiti|broke|broken
+receive|primiti
+agree|složiti se|agreed|agreed|agreeing
+support|podržati
+hit|udariti|hit|hit|hitting
+eat|jesti|ate|eaten
+drink|piti|drank|drunk
+sleep|spavati|slept|slept
+drive|voziti|drove|driven|driving
+ride|jahati, voziti|rode|ridden|riding
+fly|leteti|flew|flown
+swim|plivati|swam|swum|swimming
+wear|nositi odeću|wore|worn
+choose|izabrati|chose|chosen|choosing
+forget|zaboraviti|forgot|forgotten|forgetting
+forgive|oprostiti|forgave|forgiven|forgiving
+teach|podučavati|taught|taught
+catch|uhvatiti|caught|caught
+throw|baciti|threw|thrown
+hold|držati|held|held
+hurt|povrediti|hurt|hurt
+cost|koštati|cost|cost
+shut|zatvoriti|shut|shut|shutting
+spread|raširiti|spread|spread
+wake|probuditi|woke|woken|waking
+sing|pevati|sang|sung
+shake|tresti|shook|shaken|shaking
+steal|ukrasti|stole|stolen
+hide|sakriti|hid|hidden|hiding
+feed|hraniti|fed|fed
+fight|boriti se|fought|fought
+rise|ustati, porasti|rose|risen|rising
+lie|ležati|lay|lain|lying
+lay|položiti|laid|laid
+lend|pozajmiti nekome|lent|lent
+borrow|pozajmiti od nekoga
+check|proveriti
+confirm|potvrditi
+arrange|organizovati
+organize|organizovati
+prepare|pripremiti
+finish|završiti
+complete|dovršiti
+contact|kontaktirati
+reply|odgovoriti
+answer|odgovoriti
+inform|obavestiti
+notify|obavestiti
+remind|podsetiti
+request|zatražiti
+deliver|isporučiti
+collect|preuzeti
+load|utovariti
+unload|istovariti
+ship|otpremiti|shipped|shipped|shipping
+transport|prevesti
+book|rezervisati
+cancel|otkazati
+plan|planirati|planned|planned|planning
+schedule|zakazati
+delay|odložiti
+arrive|stići
+depart|poći
+travel|putovati|travelled/traveled|travelled/traveled|travelling/traveling
+visit|posetiti
+accept|prihvatiti
+refuse|odbiti
+approve|odobriti
+reject|odbiti
+sign|potpisati
+attach|priložiti
+forward|proslediti
+update|ažurirati
+quote|ponuditi cenu
+charge|naplatiti
+invoice|fakturisati
+order|naručiti
+pack|spakovati
+weigh|izmeriti težinu
+measure|izmeriti
+clear|ocariniti, očistiti
+solve|rešiti
+fix|popraviti
+repair|popraviti
+close|zatvoriti
+clean|očistiti
+wash|oprati
+cook|kuvati
+shop|kupovati|shopped|shopped|shopping
+listen|slušati
+like|dopadati se
+prefer|preferirati|preferred|preferred|preferring
+hate|mrzeti
+enjoy|uživati
+miss|nedostajati, propustiti
+wish|želeti
+trust|verovati
+promise|obećati
+apologize|izviniti se
+thank|zahvaliti
+invite|pozvati
+join|pridružiti se
+share|podeliti
+save|sačuvati
+delete|obrisati
+download|preuzeti
+upload|otpremiti
+install|instalirati
+connect|povezati
+search|pretražiti
+study|učiti
+practice|vežbati
+repeat|ponoviti
+translate|prevesti
+describe|opisati
+compare|uporediti
+choose|izabrati|chose|chosen|choosing
+improve|poboljšati
+manage|upravljati
+handle|rukovati
+avoid|izbeći
+protect|zaštititi
+check|proveriti
+count|brojati
+calculate|izračunati
+estimate|proceniti
+reduce|smanjiti
+increase|povećati
+fail|ne uspeti
+succeed|uspeti
+reach|dostići
+enter|ući
+exit|izaći
+cross|preći
+pick|odabrati, pokupiti
+drop|ispustiti|dropped|dropped|dropping
+push|gurati
+lift|podići
+fill|napuniti
+empty|isprazniti
+cover|pokriti
+remove|ukloniti
+replace|zameniti
+check|proveriti
+lock|zaključati
+unlock|otključati
+smile|smešiti se
+laugh|smejati se
+cry|plakati
+worry|brinuti
+relax|opustiti se
+rest|odmarati
+exercise|vežbati
+ dance|plesati
+rain|padati (kiša)
+snow|padati (sneg)
+smell|mirisati|smelled/smelt|smelled/smelt
+taste|imati ukus
+touch|dodirnuti
+notice|primetiti
+recognize|prepoznati
+realize|shvatiti
+imagine|zamisliti
+mention|pomenuti
+discuss|diskutovati
+argue|raspravljati
+complain|žaliti se
+recommend|preporučiti
+advise|savetovati
+warn|upozoriti
+depend|zavisiti
+matter|biti važno
+own|posedovati
+belong|pripadati
+contain|sadržati
+exist|postojati
+occur|dogoditi se|occurred|occurred|occurring
+beat|udarati, pobediti|beat|beaten
+bite|ugristi|bit|bitten|biting
+blow|duvati|blew|blown
+burn|goreti|burned/burnt|burned/burnt
+freeze|zamrznuti|froze|frozen|freezing
+hang|okačiti|hung|hung
+ring|zvoniti|rang|rung
+shoot|pucati, snimati|shot|shot
+sink|potonuti|sank|sunk
+stick|zalepiti|stuck|stuck
+sweep|pomesti|swept|swept
+tear|pocepati|tore|torn
+withdraw|povući|withdrew|withdrawn
+quit|napustiti|quit|quit|quitting
+bet|kladiti se|bet|bet|betting
+fit|odgovarati veličinom|fitted/fit|fitted/fit|fitting
+light|upaliti|lit|lit
+seek|tražiti|sought|sought
+deal|baviti se|dealt|dealt
+ dig|kopati|dug|dug|digging
+ dream|sanjati|dreamed/dreamt|dreamed/dreamt
+ spell|spelovati|spelled/spelt|spelled/spelt
+ shine|sijati|shone|shone|shining
+ overcome|prevazići|overcame|overcome|overcoming
+ undertake|preduzeti|undertook|undertaken|undertaking`;
+const verbs=[...new Map(raw.trim().split('\n').map(line=>{let [v,s,p,pp,ing,third]=line.trim().split('|');let past=v.endsWith('e')?v+'d':/[^aeiou]y$/.test(v)?v.slice(0,-1)+'ied':v+'ed';return [v,{v,s,p:p||past,pp:pp||p||past,ing:ing||(v.endsWith('e')&&!v.endsWith('ee')?v.slice(0,-1)+'ing':v+'ing'),third:third||(/[^aeiou]y$/.test(v)?v.slice(0,-1)+'ies':/(s|sh|ch|x|z|o)$/.test(v)?v+'es':v+'s')}]})).values()].sort((a,b)=>a.v.localeCompare(b.v));
+const times=[['Present Simple','Navike, činjenice i stanja','Radim svakog dana.'],['Present Continuous','Radnja sada, privremeno stanje ili dogovorena buduća radnja','Trenutno radim.'],['Present Perfect','Prošla radnja sa vezom sa sadašnjošću; iskustvo ili rezultat','Već sam završio posao.'],['Present Perfect Continuous','Radnja započeta ranije; naglasak na trajanju do sada','Radim već dva sata.'],['Past Simple','Završena radnja u prošlosti','Radio sam juče.'],['Past Continuous','Radnja koja je bila u toku u prošlosti','Radio sam kada si zvao.'],['Past Perfect','Radnja pre druge prošle radnje','Već sam završio kada si stigao.'],['Past Perfect Continuous','Trajanje radnje do određenog trenutka u prošlosti','Radio sam već dva sata kada si stigao.'],['Future Simple','Obećanje, spontana odluka ili predviđanje','Proveriću sutra.'],['Future Continuous','Radnja u toku u određenom budućem trenutku','Sutra u ovo vreme ću raditi.'],['Future Perfect','Radnja završena do budućeg trenutka','Do petka ću završiti.'],['Future Perfect Continuous','Trajanje radnje do budućeg trenutka','Do petka ću raditi već nedelju dana.'],['Going to','Ranije formirana namera ili predviđanje na osnovu dokaza','Planiram da radim sutra.']];
+const $=id=>document.getElementById(id);let person='I',chosen='work';const people=[['I','ja'],['You','ti'],['He','on'],['She','ona'],['It','ono'],['We','mi'],['You','vi'],['They','oni/one/ona']];people.forEach(([p,s],i)=>{let b=document.createElement('button');b.innerHTML=p+'<small>'+s+'</small>';b.setAttribute('aria-pressed',i===0);b.onclick=()=>{person=p;[...$('people').children].forEach(x=>x.setAttribute('aria-pressed',x===b));render()};$('people').append(b)});times.forEach((t,i)=>$('tense').add(new Option(t[0]+' – '+t[1],i)));const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'dj');function filter(){let q=norm($('search').value);let list=verbs.filter(v=>norm(v.v+' '+v.s).includes(q));$('verb').replaceChildren();list.forEach(v=>$('verb').add(new Option(v.v+' – '+v.s,v.v)));if(list.some(v=>v.v===chosen))$('verb').value=chosen;else if(list.length)chosen=list[0].v;$('count').textContent=list.length+' / '+verbs.length+' glagola';$('verb').disabled=!list.length;if(list.length)render();else{$('results').textContent='Nema rezultata pretrage.';$('forms').replaceChildren();$('ing').textContent='';$('note').textContent=''}}
+function render(){let v=verbs.find(x=>x.v===chosen),i=+$('tense').value,p=person,third=['He','She','It'].includes(p),be=p==='I'?'am':third?'is':'are',was=p==='I'||third?'was':'were',have=third?'has':'have',d=third?'does':'do',past=v.p.split('/')[0],pp=v.pp.split('/')[0],ing=v.ing.split('/')[0];let c=[[third?v.third:v.v,d,v.v],[be+' '+ing,be,ing],[have+' '+pp,have,pp],[have+' been '+ing,have,'been '+ing],[past,'did',v.v],[was+' '+ing,was,ing],['had '+pp,'had',pp],['had been '+ing,'had','been '+ing],['will '+v.v,'will',v.v],['will be '+ing,'will','be '+ing],['will have '+pp,'will','have '+pp],['will have been '+ing,'will','have been '+ing],[be+' going to '+v.v,be,'going to '+v.v]][i];if(v.v==='be'&&(i===0||i===4))c=[i===0?be:was,i===0?be:was,''];let [a,b,r]=c,cap=s=>s[0].toUpperCase()+s.slice(1),sub=p==='I'?p:p.toLowerCase();let sentences=[p+' '+a+'.',p+' '+b+' not'+(r?' '+r:'')+'.',cap(b)+' '+sub+(r?' '+r:'')+'?'];$('hint').textContent=times[i][1]+'. Primer: '+times[i][2];$('results').replaceChildren();sentences.forEach((s,j)=>{let box=document.createElement('div');box.className='result';let label=document.createElement('small');label.textContent=['+ Potvrdno / Affirmative','− Odrično / Negative','? Upitno / Interrogative'][j];let text=document.createElement('div');text.className='sentence';text.textContent=s;let btn=document.createElement('button');btn.className='copy';btn.textContent='Kopiraj';btn.onclick=async()=>{try{await navigator.clipboard.writeText(s)}catch(e){let t=document.createElement('textarea');t.value=s;document.body.append(t);t.select();let ok=document.execCommand('copy');t.remove();if(!ok){$('status').textContent='Označi rečenicu i kopiraj ručno.';return}}$('status').textContent='Kopirano: '+s};box.append(label,text,btn);$('results').append(box)});$('forms').replaceChildren();[['V1 – Infinitive',v.v,'Osnovni oblik'],['V2 – Past',v.p,'Prošla radnja: '+(v.v==='be'?'bio/bila/bilo':v.v==='send'?'poslao/poslala':v.v==='work'?'radio/radila':v.s)],['V3 – Past Participle',v.pp,'Perfect / pasiv: '+(v.v==='send'?'poslao/poslala; poslat':v.v==='work'?'radio/radila':v.v==='be'?'bio/bila/bilo':v.s)]].forEach(([l,w,s])=>{let el=document.createElement('div');el.className='form';let h=document.createElement('small');h.textContent=l;let word=document.createElement('div');word.className='word';word.textContent=w;let meaning=document.createElement('div');meaning.textContent=l.startsWith('V1')?v.s:s;el.append(h,word,meaning);$('forms').append(el)});$('ing').textContent='V-ing – Present Participle: '+v.ing;let stative=['know','believe','understand','want','need','own','belong','contain','seem','mean','prefer','exist','cost','matter'].includes(v.v);$('note').textContent=([1,3,5,7,9,11].includes(i)&&stative?'Napomena: ovaj glagol se obično ne koristi u Continuous obliku u svom osnovnom značenju. ': '')+(v.v==='be'&&[1,3,5,7,9,11].includes(i)?'Continuous sa be je ograničen na posebne kontekste, npr. privremeno ponašanje. ':'')+'Prikaz je gramatički obrazac; pojedini glagoli zahtevaju objekat ili dodatni kontekst za prirodnu rečenicu.';$('status').textContent=''}$('search').oninput=filter;$('verb').onchange=()=>{chosen=$('verb').value;render()};$('tense').onchange=()=>{if(!$('verb').disabled)render()};filter();</script></body></html>
